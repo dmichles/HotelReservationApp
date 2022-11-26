@@ -4,6 +4,8 @@ import com.example.hotels.data.Role;
 import com.example.hotels.data.model.Hotel;
 import com.example.hotels.data.model.Room;
 import com.example.hotels.data.model.User;
+import com.example.hotels.data.repository.HotelRepository;
+import com.example.hotels.data.repository.RoomRepository;
 import com.example.hotels.data.repository.UserRepository;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.boot.CommandLineRunner;
@@ -20,7 +22,8 @@ public class DataGenerator {
 
     @Bean
     public CommandLineRunner loadData(PasswordEncoder passwordEncoder,
-                                      UserRepository userRepository) {
+                                      UserRepository userRepository, HotelRepository hotelRepository,
+                                      RoomRepository roomRepository) {
         return args -> {
             if (userRepository.count() != 0L) {
                 return;
@@ -29,31 +32,37 @@ public class DataGenerator {
             hotel1.setCity("New York");
             hotel1.setName("Sofitel");
             hotel1.setStars("****");
+            hotelRepository.save(hotel1);
 
             Room room1 = new Room();
             room1.setHotel(hotel1);
             room1.setRoom_type("King");
             room1.setRoom_price(new BigDecimal(220.0));
+            roomRepository.save(room1);
 
             Room room2 = new Room();
             room2.setHotel(hotel1);
             room2.setRoom_type("Queen");
             room2.setRoom_price(new BigDecimal(200.0));
+            roomRepository.save(room2);
 
             Hotel hotel2 = new Hotel();
             hotel2.setCity("San Francisco");
             hotel2.setName("W");
             hotel2.setStars("****");
+            hotelRepository.save(hotel2);
 
             Room room3 = new Room();
-            room3.setHotel(hotel1);
+            room3.setHotel(hotel2);
             room3.setRoom_type("King");
             room3.setRoom_price(new BigDecimal(260.0));
+            roomRepository.save(room3);
 
             Room room4 = new Room();
-            room4.setHotel(hotel1);
+            room4.setHotel(hotel2);
             room4.setRoom_type("Queen");
             room4.setRoom_price(new BigDecimal(220.0));
+            roomRepository.save(room4);
 
             User user = new User();
             user.setUsername("user");
@@ -65,8 +74,6 @@ public class DataGenerator {
             admin.setHashedPassword(passwordEncoder.encode("admin"));
             admin.setRoles(Set.of(Role.USER, Role.ADMIN));
             userRepository.save(admin);
-
-
         };
     }
 
