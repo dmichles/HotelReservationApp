@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
+import java.time.LocalDate;
 
 @Route("custom")
 @PermitAll
@@ -63,17 +64,19 @@ public class CustomField extends Div {
                 .withValidator(localDateRange -> localDateRange.getStartDate() != null
                 || localDateRange.getEndDate() != null,"")
                 .withValidator(
-                        localDateRange ->
-                                localDateRange.getStartDate().isAfter(localDateRange.getToday())
-                                || localDateRange.getStartDate().isEqual(localDateRange.getToday()),
+                        localDateRange -> (localDateRange.getStartDate() != null &&
+                                localDateRange.getStartDate().isAfter(localDateRange.getToday()))
+                                || (localDateRange.getStartDate() != null &&
+                                localDateRange.getStartDate().isEqual(localDateRange.getToday())),
                         "Dates cannot be in the past")
-
+                                .withValidator (localDateRange ->  localDateRange.getEndDate() != null &&
+                                localDateRange.getEndDate().isAfter(localDateRange.getToday()),
+                        "Dates cannot be in the past")
                 .withValidator(
-                        localDateRange ->  localDateRange.getStartDate()
-                                .isBefore(localDateRange.getEndDate()),
-                        "Start date must be earlier than end date")
-                .withValidator(localDateRange ->  localDateRange.getEndDate().isAfter(localDateRange.getToday()),
-                        "Dates cannot be in the past")
+                        localDateRange ->  localDateRange.getEndDate() != null &&
+                                localDateRange.getStartDate() != null &&
+                                localDateRange.getStartDate().isBefore(localDateRange.getEndDate()),
+                        "")
                 .bind(reservation -> new LocalDateRange(
                                 reservation.getStartDate(), reservation.getEndDate()),
                         (reservation, localDateRange) -> {
@@ -120,10 +123,7 @@ public class CustomField extends Div {
     private com.vaadin.flow.component.Component createButtonLayout() {
         reserve.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         reserve.addClickShortcut(Key.ENTER);
-
         reserve.addClickListener(event -> validateAndSave());
-
-
         binder.addStatusChangeListener(e -> reserve.setEnabled(binder.isValid()));
         return new HorizontalLayout(reserve);
     }

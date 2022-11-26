@@ -1,6 +1,5 @@
 package com.example.hotels.component.customfield;
 
-
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.datepicker.DatePicker;
 
@@ -12,8 +11,6 @@ public class DateRangePicker extends CustomField<LocalDateRange> {
     public DateRangePicker(String label) {
         this();
         setLabel(label);
-
-
     }
 
     public DateRangePicker() {
