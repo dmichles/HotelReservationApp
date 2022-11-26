@@ -1,5 +1,8 @@
 package com.example.hotels.data.model;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -22,6 +25,7 @@ public class Hotel {
     public Long getId() {
         return id;
     }
+
 
     public void setId(Long id) {
         this.id = id;
