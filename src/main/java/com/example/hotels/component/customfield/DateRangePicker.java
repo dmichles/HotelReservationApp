@@ -1,7 +1,6 @@
 package com.example.hotels.component.customfield;
 
 
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.datepicker.DatePicker;
 
